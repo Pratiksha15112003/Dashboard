@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: green;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<h2>Employee Form</h2>
+<form id="employeeForm" onsubmit="return validateForm()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <div class="error" id="nameError"></div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+    <div class="error" id="emailError"></div>
+
+    <label for="phone">Phone Number:</label>
+    <input type="text" id="phone" name="phone">
+    <div class="error" id="phoneError"></div>
+
+    <label for="aadhar">Aadhar Number:</label>
+    <input type="text" id="aadhar" name="aadhar" onblur="verifyAadhar()">
+    <div class="error" id="aadharError"></div>
+    <div id="otpSection" style="display:none;">
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp">
+        <div class="error" id="otpError"></div>
+    </div>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age">
+    <div class="error" id="ageError"></div>
+
+    <label for="department">Department:</label>
+    <select id="department" name="department">
+        <option value="">Select Department</option>
+        <option value="HR">HR</option>
+        <option value="IT">IT</option>
+        <option value="Finance">Finance</option>
+    </select>
+    <div class="error" id="departmentError"></div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    function validateForm() {
+        let isValid = true;
+
+        const name = document.getElementById("name").value;
+        const nameError = document.getElementById("nameError");
+        if (name.trim() === "") {
+            nameError.textContent = "Name is required";
+            isValid = false;
+        } else {
+            nameError.textContent = "";
+        }
+
+        const email = document.getElementById("email").value;
+        const emailError = document.getElementById("emailError");
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!email.match(emailPattern)) {
+            emailError.textContent = "Enter a valid email";
+            isValid = false;
+        } else {
+            emailError.textContent = "";
+        }
+
+        const phone = document.getElementById("phone").value;
+        const phoneError = document.getElementById("phoneError");
+        const phonePattern = /^[6-9]\d{9}$/;
+        if (!phone.match(phonePattern)) {
+            phoneError.textContent = "Enter a valid 10-digit phone number";
+            isValid = false;
+        } else {
+            phoneError.textContent = "";
+        }
+
+        const aadhar = document.getElementById("aadhar").value;
+        const aadharError = document.getElementById("aadharError");
+        const aadharPattern = /^\d{12}$/;
+        if (!aadhar.match(aadharPattern)) {
+            aadharError.textContent = "Enter a valid 12-digit Aadhar number";
+            isValid = false;
+        } else {
+            aadharError.textContent = "";
+        }
+
+        const age = document.getElementById("age").value;
+        const ageError = document.getElementById("ageError");
+        if (age === "" || age < 18 || age > 65) {
+            ageError.textContent = "Age must be between 18 and 65";
+            isValid = false;
+        } else {
+            ageError.textContent = "";
+        }
+
+        const department = document.getElementById("department").value;
+        const departmentError = document.getElementById("departmentError");
+        if (department === "") {
+            departmentError.textContent = "Please select a department";
+            isValid = false;
+        } else {
+            departmentError.textContent = "";
+        }
+
+        return isValid;
+    }
+
+    function verifyAadhar() {
+        const aadhar = document.getElementById("aadhar").value;
+        const aadharPattern = /^\d{12}$/;
+        if (aadhar.match(aadharPattern)) {
+            alert("OTP sent to registered mobile number");
+            document.getElementById("otpSection").style.display = "block";
+        } else {
+            document.getElementById("otpSection").style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
